@@ -1,38 +1,117 @@
-.App {
-  text-align: center;
+/* Reset defaults for a clean slate */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+body {
+  font-family: 'Arial', sans-serif;
+  background: #1a1a1a;
   min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Polygon background inspired by the iceberg image */
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,10 90,90 10,90" fill="rgba(255,255,255,0.1)"/><polygon points="50,20 80,80 20,80" fill="rgba(200,200,200,0.1)"/><polygon points="50,30 70,70 30,70" fill="rgba(150,150,150,0.1)"/></svg>');
+  background-size: cover;
+  opacity: 0.5;
+  z-index: 0;
+}
+
+/* Main app container */
+.App {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+/* Header */
+h1 {
+  font-size: 24px;
+  color: #333333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Input and button container */
+input {
+  width: 70%;
+  padding: 8px;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  border-color: #666666;
+}
+
+button {
+  padding: 8px 16px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 4px;
+  background: #333333;
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: #555555;
+}
+
+/* Todo list */
+ul {
+  list-style: none;
+  margin-top: 20px;
+}
+
+li {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 5px 0;
+  background: #f9f9f9;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333333;
 }
 
-.App-link {
-  color: #61dafb;
+/* Delete button styling */
+.delete-button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background: #ffffff;
+  border: 2px solid #000000;
+  border-radius: 4px;
+  color: #ff4444;
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s, border-color 0.3s;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.delete-button:hover {
+  background: #f0f0f0;
+  border-color: #333333;
 }
