@@ -1,55 +1,69 @@
 import React, { useState, useEffect } from 'react';
-import TodoItem from './TodoItem';
+import { v4 as uuidv4 } from 'uuid';
 import './App.css';
+import TodoItem from './TodoItem';
 
 function App() {
   const [todos, setTodos] = useState(() => {
     const savedTodos = localStorage.getItem('todos');
-    return savedTodos ? JSON.parse(savedTodos) : [];
+    return savedTodos ? JSON.parse(savedTodos) : [
+      { id: uuidv4(), text: 'Learn React', completed: false },
+      { id: uuidv4(), text: 'Build a To-Do App', completed: false },
+      { id: uuidv4(), text: 'Style the UI', completed: true },
+    ];
   });
-  const [input, setInput] = useState('');
+  const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
     localStorage.setItem('todos', JSON.stringify(todos));
   }, [todos]);
 
   const addTodo = () => {
-    if (input.trim()) {
-      setTodos([...todos, { text: input, completed: false }]);
-      setInput('');
-    }
+    if (inputValue.trim() === '') return;
+    setTodos([...todos, { id: uuidv4(), text: inputValue.trim(), completed: false }]);
+    setInputValue('');
   };
 
-  const deleteTodo = (indexToDelete) => {
-    setTodos(todos.filter((_, index) => index !== indexToDelete));
+  const deleteTodo = (id) => {
+    setTodos(todos.filter(todo => todo.id !== id));
   };
 
-  const toggleComplete = (index) => {
-    setTodos(
-      todos.map((todo, i) =>
-        i === index ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
+  const toggleTodo = (id) => {
+    setTodos(todos.map(todo =>
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
+    ));
+  };
+
+  const editTodo = (id, newText) => {
+    setTodos(todos.map(todo =>
+      todo.id === id ? { ...todo, text: newText.trim() } : todo
+    ));
   };
 
   return (
-    <div className="App">
+    <div className="app">
       <h1>To-Do List</h1>
-      <input
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Add a task"
-      />
-      <button onClick={addTodo}>Add</button>
+      <div className="input-container">
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="Add a task"
+          aria-label="Add a new task"
+          onKeyPress={(e) => e.key === 'Enter' && addTodo()}
+        />
+        <button onClick={addTodo}>Add</button>
+      </div>
       <ul>
-        {todos.map((todo, index) => (
+        {todos.map(todo => (
           <TodoItem
-            key={index}
+            key={todo.id}
             todo={todo.text}
-            index={index}
+            id={todo.id}
             completed={todo.completed}
             deleteTodo={deleteTodo}
-            toggleComplete={toggleComplete}
+            toggleTodo={toggleTodo}
+            editTodo={editTodo}
           />
         ))}
       </ul>
